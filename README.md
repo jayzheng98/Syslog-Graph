@@ -13,7 +13,22 @@ This is actually a follow-up to "[Mapping-Sysmonlogs-to-ATTACK](https://github.c
 **1.** Put the `syslog.csv` in the same directory with the `syslog_correlation.py` (or change the file path in source code)
 
 **2.** Execute the `syslog_correlation.py`. This program will automatically correlate your logs and output several files as components of a graph
+
+**3.** Import the outputs into ArangoDB and create the visualized graph. For detailed instructions, please refer to [here](https://jayzheng98.github.io/notes/arangodb) 
 <br>
+
+# Description
+**1. process.csv:** A higher level that we extract from the logs, which includes all processes happened in the period
+
+**2. SyslogSyslog.csv:** Relation between sysmon logs that extracted from the `ProcessGUID` field
+
+**3. SyslogProcess.csv:** Relation between sysmon logs and processes according to their `ProcessGUID` field
+
+**4. ProcessProcess.csv:** Relation between processes according to the `SourceProcessGUID` and `TargetProcessGUID` fields of logs whose `EventID` = 10
+
+**5. ParentpChildp.csv:** Relation between processes according to the `ParentProcessGUID` field of logs whose `EventID` = 1
+
+<div align="center"> <img alt="arango8" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/syslog.png?raw=true" width="380px"></div><br>
 
 # Rationale behind the Graph
 ## Early Exploration
@@ -32,8 +47,9 @@ This is actually a follow-up to "[Mapping-Sysmonlogs-to-ATTACK](https://github.c
 ## Further Development
 **1.** Let me give a quick summary of the above:
  - *The achievement is now we've found 2 relations*
- - *The problems are:
-  - *Firstly, the `ProcessGUID` field actually has a low coverage which results in lots of logs remain uncorrelated*
-  - *Secondly, the 2 relation we have are all limited within individual process. To be specific, we can correlate logs into a group named "process", and they could be arranged chronologically within the group. However, **what about the relation between processes?***
+ - *The problems are:*
+   - *1: the `ProcessGUID` field actually has a low coverage which results in lots of logs **remain uncorrelated***
+   - *2: the 2 relation we have are all limited within individual process. To be specific, we can correlate logs into a group named "process", and they could be arranged chronologically within the group as well. However, **what about the relation between processes?***
 
-<div align="center"> <img alt="arango8" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/syslog.png?raw=true" width="380px"></div><br>
+**2.** In effect, through our subsequent research, we found that the above 2 questions are actually the answer to each other. We found out that those uncorrelated logs have one thing in common, that is, their `EventID` fields all have the value as "10". In other words, logs with `EventID 10` represent the "process access" event in the Sysmon, they are generated because a **process is accessing another one**. Furthermore, we found those logs have the SourceProcessGUID` and `TargetProcessGUID` fields, which exactly represent the relation between processes!
+
