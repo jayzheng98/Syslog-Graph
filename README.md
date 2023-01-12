@@ -10,7 +10,7 @@ This is actually a follow-up to "[Mapping-Sysmonlogs-to-ATTACK](https://github.c
 <br>
 
 # Usage
-**1.** Put the `syslog.csv` in the same directory with the `syslog_correlation.py` (or change the file path in the program)
+**1.** Put the `syslog.csv` in the same directory with the `syslog_correlation.py` (or change the file path in source code)
 
 **2.** Execute the `syslog_correlation.py`. This program will automatically correlate your logs and output several files as components of a graph
 <br>
