@@ -88,11 +88,6 @@ def ProcessProcess(Event_ID):
     s.close()
     p.close()
 
-    # Drop duplicates
-    data = pd.read_csv(file_name, header=0)
-    a = data.drop_duplicates(keep='first', inplace=False)
-    a.to_csv(file_name, index=False)
-
 if __name__ == '__main__':
     process()
     SyslogSyslog()
