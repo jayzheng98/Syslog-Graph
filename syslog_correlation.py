@@ -1,14 +1,27 @@
 import pandas as pd
 import csv
 
+def find_Index(column_name):
+    with open('syslog.csv', 'r', encoding='utf-8', newline='')as s:
+        rs = csv.reader(s)
+        lines_s = list(rs)
+        list_index = lines_s[0]
+        index = 0,
+        for i in range(0, len(list_index)):
+            if list_index[i] == column_name:
+                index = i
+    s.close()
+    return index
+
 def process():
-    data = pd.read_csv('syslog.csv', header=0)
+    data = pd.read_csv('syslog.csv', header=0, dtype={"Keywords": str, "SourceModuleName": str, "SourceName": str, "SyslogFacility": str, "SyslogSeverity": str})
     a = data.drop_duplicates(subset=['ProcessGuid'], keep='first', inplace=False, ignore_index=True).dropna(
         subset=['ProcessGuid'])
     a['_key'] = list(range(1, a.shape[0] + 1))
     a[['_key', 'ProcessGuid', 'LocalIP']].to_csv('process.csv', index=False)
 
 def SyslogSyslog():
+    index = find_Index('ProcessGuid')
     with open('syslog.csv', 'r', encoding='utf-8', newline='')as s:
         r = csv.reader(s)
         lines = list(r)
@@ -16,15 +29,16 @@ def SyslogSyslog():
         csv_write = csv.writer(ss)
         csv_write.writerow(['_from', '_to'])
         for i in range(1, len(lines)):
-            temp = lines[i][37]
+            temp = lines[i][index]
             for j in range(i + 1, len(lines)):
-                if lines[j][37] == temp:
+                if lines[j][index] == temp:
                     csv_write.writerow(['syslog/' + str(lines[i][0]), 'syslog/' + str(lines[j][0])])
                     break
     ss.close()
     s.close()
 
 def SyslogProcess():
+    index = find_Index('ProcessGuid')
     with open('process.csv', 'r', encoding='utf-8', newline='')as p:
         rp = csv.reader(p)
         lines_p = list(rp)
@@ -37,7 +51,7 @@ def SyslogProcess():
         for i in range(1, len(lines_p)):
             p_ID = lines_p[i][1]
             for j in range(1, len(lines_s)):
-                s_ID = lines_s[j][37]
+                s_ID = lines_s[j][index]
                 if s_ID == p_ID:
                     csv_write.writerow(['syslog/' + str(lines_s[j][0]),
                                         'process/' + str(lines_p[i][0])])
@@ -46,15 +60,16 @@ def SyslogProcess():
     s.close()
     p.close()
 
-def ProcessProcess(Event_ID):
-    if Event_ID == '1':
+def ProcessProcess(EventID):
+    id_index = find_Index('EventID')
+    if EventID == '1':
+        line_num1 = find_Index('ParentProcessGuid')
+        line_num2 = find_Index('ProcessGuid')
         file_name = 'ParentpChildp.csv'
-        line_num1 = 32
-        line_num2 = 37
-    elif Event_ID == '10':
+    elif EventID == '10':
+        line_num1 = find_Index('SourceProcessGUID')
+        line_num2 = find_Index('TargetProcessGUID')
         file_name = 'ProcessProcess.csv'
-        line_num1 = 51
-        line_num2 = 62
     else:
         return -1
 
@@ -68,22 +83,22 @@ def ProcessProcess(Event_ID):
         csv_write = csv.writer(f)
         csv_write.writerow(['_from', '_to'])
         for i in range(1, len(lines_s)):
-            if lines_s[i][13] == Event_ID:
+            if lines_s[i][id_index] == EventID:
                 from_ID = lines_s[i][line_num1]
                 to_ID = lines_s[i][line_num2]
-                flag = 0
+                _to = 0
+                _from = 0
                 for j in range(1, len(lines_p)):
                     p_ID = lines_p[j][1]
                     if p_ID == from_ID:
-                        flag += 1
                         _from = lines_p[j][0]
-                    if p_ID == to_ID:
-                        flag += 1
+                    elif p_ID == to_ID:
                         _to = lines_p[j][0]
 
-                    if flag == 2:
+                    if _to and _from:
+                        csv_write.writerow(['process/' + str(_from), 'process/' + str(_to)])
                         break
-                csv_write.writerow(['process/' + str(_from), 'process/' + str(_to)])
+
     f.close()
     s.close()
     p.close()
