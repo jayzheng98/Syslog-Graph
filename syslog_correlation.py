@@ -30,10 +30,11 @@ def SyslogSyslog():
         csv_write.writerow(['_from', '_to'])
         for i in range(1, len(lines)):
             temp = lines[i][index]
-            for j in range(i + 1, len(lines)):
-                if lines[j][index] == temp:
-                    csv_write.writerow(['syslog/' + str(lines[i][0]), 'syslog/' + str(lines[j][0])])
-                    break
+            if temp:
+                for j in range(i + 1, len(lines)):
+                    if lines[j][index] == temp:
+                        csv_write.writerow(['syslog/' + str(lines[i][0]), 'syslog/' + str(lines[j][0])])
+                        break
     ss.close()
     s.close()
 
