@@ -40,9 +40,11 @@ This is actually a follow-up to "[Mapping-Sysmonlogs-to-ATTACK](https://github.c
 
 **2.** Generally, the only relation that we can intuitively perceive from logs is their "time" attribute. To be more specific, all logs were generated and recorded **chronologically**. In other words, there is already a "line" that strings the logs together. However, the time attribute is necessary but not sufficient
 
+<div align="center"> <img alt="syslog1" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/syslog1.png?raw=true" width="460px"> </div><br>
+
 **3.** Inspired by the [SysmonTools](https://github.com/nshalabi/SysmonTools), we got to known that there is a field called `ProcessGuid` that could help gather logs which belong to the same process together
 
-<div align="center"> <img alt="2" src="https://camo.githubusercontent.com/8a28df54b4bc74d12fe95af2b521cd0bf47f45ff425eae51b23fc7f57c005f55/68747470733a2f2f6e6f736563757265636f64652e636f6d2f77702d636f6e74656e742f75706c6f6164732f323031382f30372f312e706e67" width="800px"></div><br>
+<div align="center"> <img alt="syslog2" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/syslog2.png?raw=true" width="460px"> </div><br>
 
 **4.** For better understanding, we specifically created a file to store the "process". Since each process has a unique `ProcessGuid`, we first obtain all `ProcessGuid` from `syslog.csv` and drop the duplicated ones, then number them start from 1 and write them into another csv file. By doing so, the connection between "syslog" and "process" is simplified as well. We only need to connect the first log to the corresponding process instead of connecting all logs to their process
 
