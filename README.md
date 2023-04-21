@@ -28,7 +28,7 @@ This is actually a follow-up to "[Mapping-Sysmonlogs-to-ATTACK](https://github.c
 
 **5. ParentpChildp.csv:** Relation within processes according to the `ParentProcessGuid` field of logs whose `EventID` = 1
 
-<div align="center"> <img alt="p2-11" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/proj2-11.png?raw=true" width="280px"> </div><br>
+<div align="center"> <img alt="p2-11" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/proj2-11.png?raw=true" width="320px"> </div><br>
 
 **6. Want to know more? Continue reading!** <br>
 
