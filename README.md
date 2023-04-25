@@ -28,13 +28,13 @@ This is actually a follow-up to "[Mapping-Sysmonlogs-to-ATTACK](https://github.c
 
 **5. ParentpChildp.csv:** Relation within processes according to the `ParentProcessGuid` field of logs whose `EventID` = 1
 
-<div align="center"> <img alt="p2-11" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/proj2-11.png?raw=true" width="320px"> </div><br>
+<div align="center"> <img alt="p2-11" src="https://github.com/jayzheng98/jayzheng98.github.io/blob/master/images/proj2-11.png?raw=true" width="300px"> </div><br>
 
 # Rationale behind the Graph
 ## Early Exploration
 **1.** To construct a graph, there are 2 key elements: `vertice` and `edge`. There is no doubt that each log can play the role as vertice in the graph, and its fields become attributes of the vertice. However, what can be used as the edge? Through our investigation, we have found and testified **5 kinds of relations** hide in the logs, and proposed a complete structuring process
 
-<div align="center"> <img alt="1" src="https://www.baeldung.com/wp-content/uploads/sites/4/2020/07/graphs-set.png?raw=true" width="360px"></div><br>
+<div align="center"> <img alt="1" src="https://www.baeldung.com/wp-content/uploads/sites/4/2020/07/graphs-set.png?raw=true" width="340px"></div><br>
 
 **2.** Generally, the only relation that we can intuitively perceive from logs is their "time" attribute. To be more specific, all logs were generated and recorded **chronologically**. In other words, there is already a "line" that strings the logs together
 
